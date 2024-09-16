@@ -4,7 +4,7 @@ import siteLogo from '../images/csraterlogo.png';
 
 export const NavBar = () => {
     return (
-        <AppBar position='static' color='primary'>
+        <AppBar position='static' sx={{ bgcolor: 'primary.dark' }}>
             <Toolbar>
                 <IconButton size='large' edge='start' aria-label='logo' component={RouterLink} to="/">
                     <img src={siteLogo} alt='site logo' style={{ width: '50px', height: 'auto' }} />
