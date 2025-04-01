@@ -15,7 +15,7 @@ export const NavBar = () => {
                 <Stack direction='row' spacing={2}>
                     <Button color='inherit' component={RouterLink} to="/path1">Udforsk</Button>
                     <Button color='inherit' component={RouterLink} to="/path2">Rate</Button>
-                    <Button color='inherit' component={RouterLink} to="/path3">Fisk</Button>
+                    <Button color='inherit' component={RouterLink} to="/login">Login</Button>
                 </Stack>
             </Toolbar>
         </AppBar>
