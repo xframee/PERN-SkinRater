@@ -6,7 +6,8 @@
   color: #61dafb;
 }
 
-body{
-  background-color: #121212;
+body {
+  background-color: #1e1e2f; /* A modern dark gray with a subtle blue tint */
+  color: #e0e0e0; /* Light gray text for good contrast */
 }
 
