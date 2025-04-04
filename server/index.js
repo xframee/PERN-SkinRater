@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const pool = require('./db');
+const bcrypt = require('bcrypt');
 
 //middleware
 app.use(cors());
@@ -13,10 +14,28 @@ app.use(express.json());
 app.post("/users", async (req, res) => {
     try {
         const { username, password } = req.body;
-        const newUser = await pool.query("INSERT INTO users (user_name, user_password) VALUES($1, $2) RETURNING *", [username, password]);
+
+        // Validation
+        if (username.length <= 3) {
+            return res.status(400).json({ error: "Username must be longer than 3 characters." });
+        }
+        if (password.length <= 5) {
+            return res.status(400).json({ error: "Password must be longer than 5 characters." });
+        }
+
+        // Hash the password
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        // Insert user into the database
+        const newUser = await pool.query(
+            "INSERT INTO users (user_name, user_password) VALUES($1, $2) RETURNING *",
+            [username, hashedPassword]
+        );
         res.json(newUser.rows[0]);
     } catch (err) {
         console.error(err.message);
+        res.status(500).json({ error: "Server error" });
     }
 });
 
