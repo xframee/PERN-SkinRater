@@ -1,5 +1,6 @@
 import React from "react";
-import { TextField, Button, Box, Typography } from "@mui/material";
+import { TextField, Button, Box, Typography, Link } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 export const Login = () => {
     return (
@@ -51,6 +52,14 @@ export const Login = () => {
                 <Button variant="contained" color="primary">
                     Login
                 </Button>
+
+                <Typography variant="body2" sx={{ color: "white", textAlign: "center" }}>
+                    Don't have an account?{" "}
+                    <Link component={RouterLink} to="/register" sx={{ color: "#61dafb" }}>
+                        Register here
+                    </Link>
+                </Typography>
+
             </Box>
         </Box>
     );
