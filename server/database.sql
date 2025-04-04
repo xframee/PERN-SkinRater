@@ -1,5 +1,3 @@
-CREATE DATABASE skinratingsite;
-
 CREATE TABLE skin_info(
     skin_id SERIAL PRIMARY KEY,
     skin_name VARCHAR(100) NOT NULL,
@@ -9,8 +7,10 @@ CREATE TABLE skin_info(
 
 CREATE TABLE users(
     user_id SERIAL PRIMARY KEY,
-    user_name VARCHAR(100) NOT NULL,
-    user_password VARCHAR(100) NOT NULL
+    user_name VARCHAR(64) NOT NULL
+    CHECK (char_length(user_name) > 4 ), 
+    user_password VARCHAR(64) NOT NULL
+    CHECK (char_length(user_password) > 6)
 );
 
 CREATE TABLE ratings(
@@ -42,6 +42,3 @@ values('AK-47 | Case Hardened', 'W', 'https://community.akamai.steamstatic.com/e
 ('MP7 | Skulls', 'W', 'https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou6ryFA957ODDZDFO_-O6nYeDg7mjMu_Ql2hSvZ0ojO2V89TzigXk-hE_Zm6gJYDDewM4MA2BqAW2xr3tm9bi6_W9ygvN/360fx360f'),
 ('Glock-18 | Fade', 'W', 'https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgposbaqKAxf0vL3dzxG6eO6nYeDg7n1a-6GkDoC7pMp3rGYpNqiiQ23-UM5ZT-hcIeQJgZsMFvR_lTox7i-m9bi6-pjfulG/360fx360f'),
 ('MP9 | Bulldozer', 'W', 'https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpou6r8FBRv7OrNfTFN--O6nYeDg7nxNr6ExjtV65Yl3b_E84iliQ2wqhU-Nj_2J4CSdAZrNQrS8lC_yerpm9bi6wdzHfqY/360fx360f');
-
-
-drop table if exists skin_info;
