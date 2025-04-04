@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { TextField, Button, Box, Typography, Link } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { registerUser } from "../utilities/registerServive";
@@ -6,19 +6,37 @@ import { registerUser } from "../utilities/registerServive";
 export const Register = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        try {
-            await registerUser(username, password);
-            navigate("/login");
 
+        // Validate the input fields
+        if (username.length <= 3) {
+            setError("Username must be longer than 3 characters.");
+            return;
+        }
+        if (password.length <= 5) {
+            setError("Password must be longer than 5 characters.");
+            return;
+        }
+
+        try {
+            setError("");
+            await registerUser(username, password);
+            setSuccess("Registration successful! Redirecting to login...");
+
+            // Redirect to login page after 2 seconds do display the success message for some time
+            setTimeout(() => {
+                navigate("/login");
+            }, 2000);
         } catch (error) {
-            
+            setError("Failed to register. Please try again.");
         }
     };
-    
+
     return (
         <Box
             sx={{
@@ -44,6 +62,19 @@ export const Register = () => {
                     maxWidth: 400, // Limit the width of the input fields
                 }}
             >
+
+                {error && (
+                    <Typography variant="body2" sx={{ color: "red", textAlign: "center" }}>
+                        {error}
+                    </Typography>
+                )}
+
+                {success && (
+                    <Typography variant="body2" sx={{ color: "green", textAlign: "center" }}>
+                        {success}
+                    </Typography>
+                )}
+
                 <TextField
                     label="Username"
                     variant="outlined"
