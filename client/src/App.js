@@ -1,10 +1,11 @@
 import './App.css';
-import { NavBar } from './components/Navbar';
-import { Login } from './pages/Login';
 import { Route, Routes } from "react-router-dom";
-import { Home } from './pages/Home';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './utilities/theme';
+import { NavBar } from './components/Navbar';
+import { Login } from './pages/Login';
+import { Home } from './pages/Home';
+import { Register } from './pages/Register';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
     </ThemeProvider>
