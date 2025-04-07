@@ -1,6 +1,5 @@
 export const registerUser = async (username, password) => {
     try {
-        // Send a POST request to the server
         const response = await fetch("http://localhost:5000/users", {
             method: "POST",
             headers: {
@@ -9,11 +8,12 @@ export const registerUser = async (username, password) => {
             body: JSON.stringify({ username, password }),
         });
 
+        const data = await response.json();
         if (!response.ok) {
-            throw new Error("Failed to register user");
+            return { error: data.error || "Failed to register user" }; //fallback error message
         }
 
-        return await response.json();
+        return data;
     } catch (error) {
         console.error("Error registering user:", error);
         throw error;
