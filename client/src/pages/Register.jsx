@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Button, Box, Typography, Link } from "@mui/material";
+import { TextField, Button, Box, Typography, Link, Alert } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { registerUser } from "../utilities/registerServive";
 
@@ -25,7 +25,11 @@ export const Register = () => {
 
         try {
             setError("");
-            await registerUser(username, password);
+            const response = await registerUser(username, password);
+            if (response.error) {
+                setError(response.error); // Display the error from the backend
+                return;
+            }
             setSuccess("Registration successful! Redirecting to login...");
 
             // Redirect to login page after 2 seconds do display the success message for some time
@@ -49,6 +53,18 @@ export const Register = () => {
             }}
         >
 
+            {error && (
+                <Typography variant="body2" sx={{ color: "red", textAlign: "center" }}>
+                    <Alert severity="error">{error}</Alert>
+                </Typography>
+            )}
+
+            {success && (
+                <Typography variant="body2" sx={{ color: "green", textAlign: "center" }}>
+                    <Alert severity="success">{success}</Alert>
+                </Typography>
+            )}
+
             <Typography variant="h4" sx={{ color: "white" }}>
                 Register
             </Typography>
@@ -62,18 +78,6 @@ export const Register = () => {
                     maxWidth: 400, // Limit the width of the input fields
                 }}
             >
-
-                {error && (
-                    <Typography variant="body2" sx={{ color: "red", textAlign: "center" }}>
-                        {error}
-                    </Typography>
-                )}
-
-                {success && (
-                    <Typography variant="body2" sx={{ color: "green", textAlign: "center" }}>
-                        {success}
-                    </Typography>
-                )}
 
                 <TextField
                     label="Username"
