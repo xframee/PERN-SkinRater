@@ -23,6 +23,12 @@ app.post("/users", async (req, res) => {
             return res.status(400).json({ error: "Password must be longer than 5 characters." });
         }
 
+        // Check if username already exists
+        const userExists = await pool.query("SELECT * FROM users WHERE user_name = $1", [username]);
+        if (userExists.rows.length > 0) {
+            return res.status(400).json({ error: "Username is already taken." });
+        }
+
         // Hash the password
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
