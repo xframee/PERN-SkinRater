@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Button, Box, Typography, Link, Alert } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { registerUser } from "../utilities/registerServive";
+import { registerUser } from "../utilities/registerService";
 
 export const Register = () => {
     const [username, setUsername] = useState("");
