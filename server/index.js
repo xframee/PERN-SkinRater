@@ -6,6 +6,8 @@ const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const authenticateToken = require("./middleware/auth.js");
+
 
 //middleware
 app.use(cors());
@@ -41,12 +43,29 @@ app.post("/login", async (req, res) => {
         // Send the token as an HTTP-only cookie
         res.cookie("token", token, {
             httpOnly: true, // Prevent access via JavaScript
-            secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+            secure: process.env.NODE_ENV === "production", 
             sameSite: "strict", // Prevent CSRF
             maxAge: 21600000, // 6 hours
         });
 
         res.json({ message: "Login successful" });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+// Logout
+app.post("/logout", (req, res) => {
+    try {
+        // Clear the token cookie
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+        });
+
+        res.json({ message: "Logout successful" });
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: "Server error" });
@@ -78,7 +97,7 @@ app.post("/users", async (req, res) => {
 
         // Insert user into the database
         const newUser = await pool.query(
-            "INSERT INTO users (user_name, user_password) VALUES($1, $2) RETURNING *",
+            "INSERT INTO users (user_name, user_password) VALUES($1, $2) RETURNING user_id, user_name",
             [username, hashedPassword]
         );
         res.json(newUser.rows[0]);
@@ -131,6 +150,32 @@ app.get("/skins/:id", async (req, res) => {
         res.json(skin.rows[0]);
     } catch (err) {
         console.error(err.message);
+    }
+});
+
+//Rate a skin
+app.post("/rate-skin", authenticateToken, async (req, res) => {
+    try {
+        const { skin_id, rating } = req.body;
+
+        // Ensure the user is authenticated
+        const user_id = req.user.user_id; // Extracted from the JWT
+
+        // Validate input
+        if (!skin_id || !rating || rating < 1 || rating > 5) {
+            return res.status(400).json({ error: "Invalid input: Skin ID and rating (1-5) are required" });
+        }
+
+        // Call the "rate" SQL function in the database
+        const result = await pool.query(
+            "SELECT rate_skin($1, $2, $3)", // Assuming your SQL function is named "rate"
+            [user_id, skin_id, rating]
+        );
+
+        res.json({ message: "Rating submitted successfully"});
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: "Server error" });
     }
 });
 
