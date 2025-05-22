@@ -13,7 +13,7 @@ export const NavBar = () => {
                     CS SKIN RATER
                 </Typography>
                 <Stack direction='row' spacing={2}>
-                    <Button color='inherit' component={RouterLink} to="/path1">Udforsk</Button>
+                    <Button color='inherit' component={RouterLink} to="/path1">Explore</Button>
                     <Button color='inherit' component={RouterLink} to="/path2">Rate</Button>
                     <Button color='inherit' component={RouterLink} to="/login">Login</Button>
                 </Stack>
