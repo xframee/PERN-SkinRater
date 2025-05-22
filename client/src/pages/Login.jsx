@@ -8,7 +8,8 @@ export const Login = () => {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        if (e) e.preventDefault();
         try {
             const response = await fetch("http://localhost:5000/login", {
                 method: "POST",
@@ -19,9 +20,8 @@ export const Login = () => {
             const data = await response.json();
 
             if (response.ok) {
-                navigate("/dashboard"); // Redirect to dashboard
+                navigate("/"); // Redirect to home
             } else {
-                // Handle login error
                 setError(data.error || "Login failed. Please try again.");
             }
         } catch (err) {
@@ -41,7 +41,6 @@ export const Login = () => {
                 padding: 6,
             }}
         >
-
             {error && (
                 <Typography variant="body2" sx={{ color: "red", textAlign: "center" }}>
                     <Alert severity="error">{error}</Alert>
@@ -58,37 +57,47 @@ export const Login = () => {
                     flexDirection: "column",
                     gap: 2,
                     width: "100%",
-                    maxWidth: 400, // Limit the width of the input fields
+                    maxWidth: 400,
                 }}
             >
-                <TextField
-                    label="Username"
-                    variant="outlined"
-                    fullWidth
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    InputLabelProps={{ style: { color: "white" } }} // Light label color
-                    InputProps={{
-                        style: { color: "white", backgroundColor: "#2e2e3e" }, // Light text and dark input background
-                    }}
-                />
+                <form onSubmit={handleLogin}>
+                    <TextField
+                        label="Username"
+                        variant="outlined"
+                        fullWidth
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        InputLabelProps={{ style: { color: "white" } }}
+                        InputProps={{
+                            style: { color: "white", backgroundColor: "#2e2e3e" },
+                        }}
+                        margin="normal"
+                    />
 
-                <TextField
-                    label="Password"
-                    type="password"
-                    variant="outlined"
-                    fullWidth
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    InputLabelProps={{ style: { color: "white" } }} // Light label color
-                    InputProps={{
-                        style: { color: "white", backgroundColor: "#2e2e3e" }, // Light text and dark input background
-                    }}
-                />
+                    <TextField
+                        label="Password"
+                        type="password"
+                        variant="outlined"
+                        fullWidth
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        InputLabelProps={{ style: { color: "white" } }}
+                        InputProps={{
+                            style: { color: "white", backgroundColor: "#2e2e3e" },
+                        }}
+                        margin="normal"
+                    />
 
-                <Button variant="contained" color="primary" onClick={handleLogin}>
-                    Login
-                </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                        fullWidth
+                        sx={{ mt: 2 }}
+                    >
+                        Login
+                    </Button>
+                </form>
 
                 <Typography variant="body2" sx={{ color: "white", textAlign: "center" }}>
                     Don't have an account?{" "}
