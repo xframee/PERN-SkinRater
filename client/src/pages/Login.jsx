@@ -9,7 +9,7 @@ export const Login = () => {
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
-        if (e) e.preventDefault();
+        e.preventDefault();
         try {
             const response = await fetch("http://localhost:5000/login", {
                 method: "POST",
