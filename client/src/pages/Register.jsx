@@ -10,8 +10,8 @@ export const Register = () => {
     const [success, setSuccess] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
         // Validate the input fields
         if (username.length <= 3) {
@@ -78,35 +78,44 @@ export const Register = () => {
                     maxWidth: 400, // Limit the width of the input fields
                 }}
             >
+                <form onSubmit={handleSubmit}>
+                    <TextField
+                        label="Username"
+                        variant="outlined"
+                        fullWidth
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        InputLabelProps={{ style: { color: "white" } }} // Light label color
+                        InputProps={{
+                            style: { color: "white", backgroundColor: "#2e2e3e" }, // Light text and dark input background
+                        }}
+                        margin="normal"
+                    />
 
-                <TextField
-                    label="Username"
-                    variant="outlined"
-                    fullWidth
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    InputLabelProps={{ style: { color: "white" } }} // Light label color
-                    InputProps={{
-                        style: { color: "white", backgroundColor: "#2e2e3e" }, // Light text and dark input background
-                    }}
-                />
+                    <TextField
+                        label="Password"
+                        type="password"
+                        variant="outlined"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        fullWidth
+                        InputLabelProps={{ style: { color: "white" } }} // Light label color
+                        InputProps={{
+                            style: { color: "white", backgroundColor: "#2e2e3e" }, // Light text and dark input background
+                        }}
+                        margin="normal"
+                    />
 
-                <TextField
-                    label="Password"
-                    type="password"
-                    variant="outlined"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    fullWidth
-                    InputLabelProps={{ style: { color: "white" } }} // Light label color
-                    InputProps={{
-                        style: { color: "white", backgroundColor: "#2e2e3e" }, // Light text and dark input background
-                    }}
-                />
-
-                <Button variant="contained" color="primary" onClick={handleSubmit}>
-                    Register
-                </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                        fullWidth
+                        sx={{ mt: 2 }}
+                    >
+                        Register
+                    </Button>
+                </form>
 
                 <Typography variant="body2" sx={{ color: "white", textAlign: "center" }}>
                     Already have an account?{" "}
