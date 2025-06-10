@@ -20,7 +20,11 @@ export const Login = () => {
             const data = await response.json();
 
             if (response.ok) {
-                navigate("/"); // Redirect to home
+                localStorage.setItem("userId", data.user_id);
+                localStorage.setItem("userName", data.username);
+                navigate("/");
+                window.location.reload();
+                navigate("/");
             } else {
                 setError(data.error || "Login failed. Please try again.");
             }
