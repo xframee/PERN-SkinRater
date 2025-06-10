@@ -48,7 +48,7 @@ app.post("/login", async (req, res) => {
             maxAge: 21600000, // 6 hours
         });
 
-        res.json({ message: "Login successful" });
+        res.json({ user_id:  user.rows[0].user_id, username: user.rows[0].user_name});
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ error: "Server error" });
