@@ -14,14 +14,13 @@ export const Login = () => {
             const response = await fetch("http://localhost:5000/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
+                credentials: "include",
                 body: JSON.stringify({ username, password }),
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                localStorage.setItem("userId", data.user_id);
-                localStorage.setItem("userName", data.username);
                 navigate("/");
                 window.location.reload();
                 navigate("/");
