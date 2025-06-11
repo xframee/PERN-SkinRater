@@ -55,6 +55,12 @@ app.post("/login", async (req, res) => {
     }
 });
 
+// get me info
+app.get("/me", authenticateToken, (req, res) => {
+    const { user_id, username } = req.user;      // set by the middleware
+    res.json({ userId: user_id, username });
+  });
+
 // Logout
 app.post("/logout", (req, res) => {
     try {
@@ -129,7 +135,6 @@ app.get("/users/:id", async (req, res) => {
 });
 
 //Get all skins
-
 app.get("/skins", async (req, res) => {
     try {
         const { page = 1, limit = 10 } = req.query;
