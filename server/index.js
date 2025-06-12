@@ -7,76 +7,18 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const authenticateToken = require("./middleware/auth.js");
+const authRoutes = require("./routes/authRoutes");
 
 
 //middleware
-app.use(cors());
+app.use(cors({ origin: "http://localhost:3000", credentials: true })); // allow CORS requests from the React app and allow credentials (cookies) to be sent
 app.use(express.json());
 app.use(cookieParser());
 
 //ROUTES//
 
-// Login
-app.post("/login", async (req, res) => {
-    try {
-        const { username, password } = req.body;
-
-        // Check if the user exists
-        const user = await pool.query("SELECT * FROM users WHERE user_name = $1", [username]);
-        if (user.rows.length === 0) {
-            return res.status(400).json({ error: "Invalid username or password." });
-        }
-
-        // Compare the provided password with the hashed password
-        const validPassword = await bcrypt.compare(password, user.rows[0].user_password);
-        if (!validPassword) {
-            return res.status(400).json({ error: "Invalid username or password." });
-        }
-
-        // Generate a JWT
-        const token = jwt.sign(
-            { user_id: user.rows[0].user_id, username: user.rows[0].user_name },
-            process.env.JWT_SECRET,
-            { expiresIn: "6h" } // Token expires in 6 hour. implement refresh token for longer sessions later
-        );
-
-        // Send the token as an HTTP-only cookie
-        res.cookie("token", token, {
-            httpOnly: true, // Prevent access via JavaScript
-            secure: process.env.NODE_ENV === "production", 
-            sameSite: "strict", // Prevent CSRF
-            maxAge: 21600000, // 6 hours
-        });
-
-        res.json({ user_id:  user.rows[0].user_id, username: user.rows[0].user_name});
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ error: "Server error" });
-    }
-});
-
-// get me info
-app.get("/me", authenticateToken, (req, res) => {
-    const { user_id, username } = req.user;      // set by the middleware
-    res.json({ userId: user_id, username });
-  });
-
-// Logout
-app.post("/logout", (req, res) => {
-    try {
-        // Clear the token cookie
-        res.clearCookie("token", {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-        });
-
-        res.json({ message: "Logout successful" });
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ error: "Server error" });
-    }
-});
+// --- mount routers ---
+app.use("/", authRoutes);  // paths are /login, /logout, /me
 
 // add a user
 app.post("/users", async (req, res) => {
