@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { TextField, Button, Box, Typography, Link, Alert } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 
 export const Login = () => {
+    const { setUser } = useUser();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -18,18 +20,17 @@ export const Login = () => {
                 body: JSON.stringify({ username, password }),
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                navigate("/");
-                window.location.reload();
-                navigate("/");
-            } else {
-                setError(data.error || "Login failed. Please try again.");
+            if (!response.ok) {
+                const { error } = await response.json().catch(() => ({}));
+                return setError(error || "Login failed. Please try again.");
             }
+
+            const me = await response.json();        // { userId, username }
+            setUser(me);                        // context only
+            navigate("/");
         } catch (err) {
-            console.error("Error during login:", err);
-            setError("An unexpected error occurred. Please try again.");
+            console.error(err);
+            setError("Unexpected error occured");
         }
     };
 
