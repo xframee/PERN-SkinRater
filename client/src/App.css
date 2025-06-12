@@ -11,3 +11,7 @@ body {
   color: #e0e0e0; /* Light gray text for good contrast */
 }
 
+.username-text{
+  padding-left: 5px;
+}
+
