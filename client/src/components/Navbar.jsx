@@ -22,7 +22,7 @@ export const NavBar = () => {
 
                     {!loading && (
                         user ? (
-                            <UserMenu userId={user.userId} onLogout={logout} />
+                            <UserMenu userId={user.userId} username={user.username} onLogout={logout} />
                         ) : (
                             <>
                                 <Button color="inherit" component={RouterLink} to="/login">
