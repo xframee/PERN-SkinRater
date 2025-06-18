@@ -79,15 +79,34 @@ app.get("/users/:id", async (req, res) => {
 //Get all skins
 app.get("/skins", async (req, res) => {
     try {
-        const { page = 1, limit = 10 } = req.query;
-        const offset = (page - 1) * limit;
-
-        const allSkins = await pool.query("SELECT * FROM skin_info ORDER BY skin_id LIMIT $1 OFFSET $2", [limit, offset]);
-        res.json(allSkins.rows);
+      // query parameters arrive as strings,  convert to integers
+      const page  = Math.max(parseInt(req.query.page  ?? "1", 10), 1); 
+      const limit = Math.max(parseInt(req.query.limit ?? "10", 10), 1);
+  
+      const offset = (page - 1) * limit;
+  
+      // get the total number of skins 
+      const [{ count }] = (await pool.query("SELECT COUNT(*) FROM skin_info")).rows;
+  
+      // get the skins for the current page
+      const { rows } = await pool.query(
+        "SELECT * FROM skin_info ORDER BY skin_id LIMIT $1 OFFSET $2",
+        [limit, offset]
+      );
+  
+      res.json({
+        data: rows,
+        totalItems: Number(count),         
+        page,
+        pageSize: limit,
+        totalPages: Math.ceil(count / limit)
+      });
     } catch (err) {
-        console.error(err.message);
+      console.error(err.message);
+      res.status(500).send("Server error");
     }
-});
+  });
+  
 
 // get a specific skin
 app.get("/skins/:id", async (req, res) => {
