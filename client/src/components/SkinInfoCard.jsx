@@ -10,9 +10,9 @@ import '../App.css';
 export default function SkinInfoCard({ skin, index }) {
     return (
         <div className="skin-info-cards">
-            <Card sx={{ width: 345 }}>
+            <Card sx={{ width: 260 }}>
                 <CardMedia
-                    sx={{ height: 240 }}
+                    sx={{ height: 180 }}
                     image={skin.skin_image}
                 />
                 <CardContent>
