@@ -22,7 +22,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  gap: 20px;
+  gap: 60px;
   padding: 20px;
 }
 
