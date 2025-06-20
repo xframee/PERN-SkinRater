@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
-import Pagination from '@mui/material/Pagination';
+import Pagination from "@mui/material/Pagination";
+import SkinInfoCard from "./SkinInfoCard";
 import "../App.css";
 
-const SkinListCards = ({ count }) => {
+const SkinListCards = ({ count = 4 }) => {
     const [skins, setSkins] = useState([]);
-    const [page, setPage] = useState(1);
-    const [numberOfPages, setNumberOfPages] = useState(0);
+    const [page, setPage] = useState(1);   // 1-based everywhere
+    const [pageCount, setPageCount] = useState(0); // total number of pages
 
     useEffect(() => {
         const fetchSkins = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/skins?page=${page}&limit=${count}`);
-                if (!response.ok) throw new Error("Failed to fetch skins");
-                const data = await response.json();
-                setSkins(data);
-                setNumberOfPages(data.totalPages);
-            } catch (error) {
-                console.error("Error fetching skins:", error);
+                const res = await fetch(
+                    `http://localhost:5000/skins?page=${page}&limit=${count}`
+                );
+                if (!res.ok) throw new Error("Failed to fetch skins");
+
+                const json = await res.json();
+                setSkins(json.data);          // json.data, not json
+                setPageCount(json.totalPages);
+            } catch (err) {
+                console.error(err);
             }
         };
 
@@ -26,16 +30,24 @@ const SkinListCards = ({ count }) => {
     return (
         <div className="pagination-container">
             <h1>Title</h1>
+
+            <div className="skin-list">
+                {skins.map((skin, index) => (
+                    <SkinInfoCard skin={skin} index={index} />
+                ))}
+            </div>
+
             <Pagination
-                count={20}
-                page={page + 1}
-                onChange={(_, value) => setPage(value - 1)}
+                count={pageCount}
+                page={page}
+                onChange={(_, value) => setPage(value)}
                 color="primary"
                 variant="outlined"
                 size="large"
                 showFirstButton
                 showLastButton
             />
+
         </div>
     );
 };
