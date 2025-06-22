@@ -7,10 +7,10 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import '../App.css';
 
-export default function SkinInfoCard({ skin, index }) {
+export default function SkinInfoCard({ skin }) {
     return (
         <div className="skin-info-cards">
-            <Card sx={{ width: 260 }}>
+            <Card sx={{ width: 320 }}>
                 <CardMedia
                     sx={{ height: 180 }}
                     image={skin.skin_image}
