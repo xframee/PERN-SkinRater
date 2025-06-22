@@ -20,8 +20,9 @@ export default function SkinInfoCard({ skin }) {
                         {skin.skin_name}
                     </Typography>
                 </CardContent>
-                <CardActions sx={{ bgcolor: 'background.paper', borderTop: '2px solid #e0e0e0' }}>
-                    <Button sx={{ size: 'small', color: "primary.contrastText" }}>Share</Button>
+                <CardActions sx={{ bgcolor: 'background.paper', borderTop: '2px solid #e0e0e0', justifyContent: 'space-between' }}>
+                    <Typography >Average rating: {skin.average_rating}</Typography>
+                    <Button sx={{ml: 'auto', size: 'small', color: "primary.contrastText"}}>Share</Button>
                 </CardActions>
             </Card>
         </div>
