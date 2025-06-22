@@ -16,11 +16,11 @@ export default function SkinInfoCard({ skin }) {
                     image={skin.skin_image}
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography gutterBottom variant="h6" component="div">
                         {skin.skin_name}
                     </Typography>
                 </CardContent>
-                <CardActions sx={{ bgcolor: 'background.paper' }}>
+                <CardActions sx={{ bgcolor: 'background.paper', borderTop: '2px solid #e0e0e0' }}>
                     <Button sx={{ size: 'small', color: "primary.contrastText" }}>Share</Button>
                 </CardActions>
             </Card>
