@@ -128,13 +128,13 @@ app.post("/rate-skin", authenticateToken, async (req, res) => {
         const user_id = req.user.user_id; // Extracted from the JWT
 
         // Validate input
-        if (!skin_id || !rating || rating < 1 || rating > 5) {
-            return res.status(400).json({ error: "Invalid input: Skin ID and rating (1-5) are required" });
+        if (!skin_id || !rating || rating < 1 || rating > 10) {
+            return res.status(400).json({ error: "Invalid input: Skin ID and rating (1-10) are required" });
         }
 
         // Call the "rate" SQL function in the database
         const result = await pool.query(
-            "SELECT rate_skin($1, $2, $3)", // Assuming your SQL function is named "rate"
+            "SELECT rate_skin($1, $2, $3)", // use the stored function to rate a skin
             [user_id, skin_id, rating]
         );
 
