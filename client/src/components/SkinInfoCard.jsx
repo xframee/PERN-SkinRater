@@ -12,7 +12,7 @@ export default function SkinInfoCard({ skin }) {
         <div className="skin-info-cards">
             <Card sx={{ width: 320 }}>
                 <CardMedia
-                    sx={{ height: 180 }}
+                    sx={{ height: 240 }}
                     image={skin.skin_image}
                 />
                 <CardContent>
@@ -20,9 +20,8 @@ export default function SkinInfoCard({ skin }) {
                         {skin.skin_name}
                     </Typography>
                 </CardContent>
-                <CardActions>
-                    <Button size="small">Share</Button>
-                    <Button size="small">Learn More</Button>
+                <CardActions sx={{ bgcolor: 'background.paper' }}>
+                    <Button sx={{ size: 'small', color: "primary.contrastText" }}>Share</Button>
                 </CardActions>
             </Card>
         </div>
