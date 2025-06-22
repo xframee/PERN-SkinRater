@@ -5,7 +5,7 @@ export const Home = () => {
     return (
         <div>
             <h1>Home</h1>
-            <SkinListCards count={10} />
+            <SkinListCards count={8} />
         </div>
     );
 }
