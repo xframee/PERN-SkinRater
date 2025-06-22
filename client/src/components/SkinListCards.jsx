@@ -3,7 +3,7 @@ import Pagination from "@mui/material/Pagination";
 import SkinInfoCard from "./SkinInfoCard";
 import "../App.css";
 
-const SkinListCards = ({ count = 4 }) => {
+const SkinListCards = ({ count  }) => {
     const [skins, setSkins] = useState([]);
     const [page, setPage] = useState(1);   // 1-based everywhere
     const [pageCount, setPageCount] = useState(0); // total number of pages
@@ -32,8 +32,8 @@ const SkinListCards = ({ count = 4 }) => {
             <h1>Title</h1>
 
             <div className="skin-list">
-                {skins.map((skin, index) => (
-                    <SkinInfoCard skin={skin} index={index} />
+                {skins.map((skin) => (
+                    <SkinInfoCard key = {skin.skin_id} skin={skin} />
                 ))}
             </div>
 
