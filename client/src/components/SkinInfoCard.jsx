@@ -3,8 +3,8 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import RateMenu from './RateMenu';
 import '../App.css';
 
 export default function SkinInfoCard({ skin }) {
@@ -22,7 +22,7 @@ export default function SkinInfoCard({ skin }) {
                 </CardContent>
                 <CardActions sx={{ bgcolor: 'background.paper', borderTop: '2px solid #e0e0e0', justifyContent: 'space-between' }}>
                     <Typography >Average rating: {skin.average_rating}</Typography>
-                    <Button sx={{ml: 'auto', size: 'small', color: "primary.contrastText"}}>Share</Button>
+                    <RateMenu skinId={ skin.skin_id }/>
                 </CardActions>
             </Card>
         </div>
