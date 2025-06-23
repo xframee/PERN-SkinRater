@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import RateMenu from './RateMenu';
 import '../App.css';
 
-export default function SkinInfoCard({ skin }) {
+export default function SkinInfoCard({ skin, refetchSkins }) {
     return (
         <div className="skin-info-cards">
             <Card sx={{ width: 320 }}>
@@ -21,8 +21,8 @@ export default function SkinInfoCard({ skin }) {
                     </Typography>
                 </CardContent>
                 <CardActions sx={{ bgcolor: 'background.paper', borderTop: '2px solid #e0e0e0', justifyContent: 'space-between' }}>
-                    <Typography >Average rating: {skin.average_rating}</Typography>
-                    <RateMenu skinId={ skin.skin_id }/>
+                    <Typography >Average rating: {skin.average_rating ?? "N/A"}</Typography>
+                    <RateMenu skinId={ skin.skin_id } onRated={refetchSkins} />
                 </CardActions>
             </Card>
         </div>
