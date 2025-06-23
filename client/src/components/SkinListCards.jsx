@@ -1,31 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Pagination from "@mui/material/Pagination";
 import SkinInfoCard from "./SkinInfoCard";
 import "../App.css";
 
-const SkinListCards = ({ count  }) => {
+const SkinListCards = ({ count }) => {
     const [skins, setSkins] = useState([]);
     const [page, setPage] = useState(1);   // 1-based everywhere
     const [pageCount, setPageCount] = useState(0); // total number of pages
 
-    useEffect(() => {
-        const fetchSkins = async () => {
-            try {
-                const res = await fetch(
-                    `http://localhost:5000/skins?page=${page}&limit=${count}`
-                );
-                if (!res.ok) throw new Error("Failed to fetch skins");
+    const fetchSkins = useCallback(async () => {
 
-                const json = await res.json();
-                setSkins(json.data);          // json.data, not json
-                setPageCount(json.totalPages);
-            } catch (err) {
-                console.error(err);
-            }
-        };
+        const url = new URL("http://localhost:5000/skins");
+        url.searchParams.set("page", page);
+        url.searchParams.set("limit", count);
 
-        fetchSkins();
+        const res = await fetch(url,{ credentials: "include" });
+        const data = await res.json();
+        setSkins(data.data);
+        setPageCount(data.totalPages);
     }, [page, count]);
+
+    useEffect(() => { fetchSkins(); }, [fetchSkins]);
 
     return (
         <div className="pagination-container">
@@ -33,7 +28,7 @@ const SkinListCards = ({ count  }) => {
 
             <div className="skin-list">
                 {skins.map((skin) => (
-                    <SkinInfoCard key = {skin.skin_id} skin={skin} />
+                    <SkinInfoCard key={skin.skin_id} skin={skin} refetchSkins={fetchSkins} />
                 ))}
             </div>
 
