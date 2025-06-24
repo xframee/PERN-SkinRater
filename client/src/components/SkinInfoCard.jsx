@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography';
 import RateMenu from './RateMenu';
 import '../App.css';
 
+//make a color object that maps to the skin rarity and then we style each card based on the rarity
+
 export default function SkinInfoCard({ skin, refetchSkins }) {
     return (
         <div className="skin-info-cards">
