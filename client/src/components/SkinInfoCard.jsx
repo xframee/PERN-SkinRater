@@ -8,11 +8,21 @@ import RateMenu from './RateMenu';
 import '../App.css';
 
 //make a color object that maps to the skin rarity and then we style each card based on the rarity
+const rarityColors = {
+    "Consumer" : "#AFAFAF",
+    "Industrial": "#6496E1",
+    "Mil-spec": "#4B69CD",
+    "Restricted": "#8847FF",
+    "Classified": "#D32CE6",
+    "Covert": "#EB4B4B",
+    "Contraband": "#886A08"
+};
+
 
 export default function SkinInfoCard({ skin, refetchSkins }) {
     return (
         <div className="skin-info-cards">
-            <Card sx={{ width: 320 }}>
+            <Card sx={{ width: 320, borderRadius: 2, bgcolor: rarityColors[skin.rarity] || '#FFFFFF' }}>
                 <CardMedia
                     sx={{ height: 240 }}
                     image={skin.skin_image}
