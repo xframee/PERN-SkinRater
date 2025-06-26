@@ -25,7 +25,7 @@ export default function SkinInfoCard({ skin, refetchSkins }) {
         <div className="skin-info-cards">
             <Card sx={{ width: 320, borderRadius: 2, bgcolor: rarityColors[skin.rarity] || '#FFFFFF' }}>
                 <Box sx={{ p: 1.5, bgcolor: 'rgba(0,0,0,0.5)' }}>
-                    <Typography variant="h6" color="#ffffff" sx={{ textTransform: 'capitalize' }}>
+                    <Typography variant="h6" color="#ffffff">
                         {skin.rarity}
                     </Typography>
                 </Box>
