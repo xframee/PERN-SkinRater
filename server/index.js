@@ -4,10 +4,10 @@ const cors = require('cors');
 const pool = require('./db');
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const authenticateToken = require("./middleware/auth.js");
 const authRoutes = require("./routes/authRoutes");
+const skinsRoutes = require('./routes/skinsRoutes');
+const usersRoutes = require("./routes/usersRoutes");
 
 
 //middleware
@@ -15,10 +15,10 @@ app.use(cors({ origin: "http://localhost:3000", credentials: true })); // allow 
 app.use(express.json());
 app.use(cookieParser());
 
-//ROUTES//
-
-// --- mount routers ---
+//Routes//
 app.use("/", authRoutes);  // paths are /login, /logout, /me
+app.use("/skins", skinsRoutes); // paths are /skins, /skins/:id, /skins/rate
+app.use("/users", usersRoutes); // paths are /users, /users/:id
 
 // add a user
 app.post("/users", async (req, res) => {
@@ -73,75 +73,6 @@ app.get("/users/:id", async (req, res) => {
         res.json(user.rows[0]);
     } catch (err) {
         console.error(err.message);
-    }
-});
-
-//Get all skins
-app.get("/skins", async (req, res) => {
-    try {
-      // query parameters arrive as strings,  convert to integers
-      const page  = Math.max(parseInt(req.query.page  ?? "1", 10), 1); 
-      const limit = Math.max(parseInt(req.query.limit ?? "10", 10), 1);
-  
-      const offset = (page - 1) * limit;
-  
-      // get the total number of skins 
-      const [{ count }] = (await pool.query("SELECT COUNT(*) FROM skin_info")).rows;
-  
-      // get the skins for the current page
-      const { rows } = await pool.query(
-        "SELECT * FROM skin_info ORDER BY skin_id LIMIT $1 OFFSET $2",
-        [limit, offset]
-      );
-  
-      res.json({
-        data: rows,
-        totalItems: Number(count),         
-        page,
-        pageSize: limit,
-        totalPages: Math.ceil(count / limit)
-      });
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server error");
-    }
-  });
-  
-
-// get a specific skin
-app.get("/skins/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const skin = await pool.query("SELECT * FROM skin_info WHERE skin_id = $1", [id]);
-        res.json(skin.rows[0]);
-    } catch (err) {
-        console.error(err.message);
-    }
-});
-
-//Rate a skin
-app.post("/rate-skin", authenticateToken, async (req, res) => {
-    try {
-        const { skin_id, rating } = req.body;
-
-        // Ensure the user is authenticated
-        const user_id = req.user.user_id; // Extracted from the JWT
-
-        // Validate input
-        if (!skin_id || !rating || rating < 1 || rating > 10) {
-            return res.status(400).json({ error: "Invalid input: Skin ID and rating (1-10) are required" });
-        }
-
-        // Call the "rate" SQL function in the database
-        const result = await pool.query(
-            "SELECT rate_skin($1, $2, $3)", // use the stored function to rate a skin
-            [user_id, skin_id, rating]
-        );
-
-        res.json({ message: "Rating submitted successfully"});
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ error: "Server error" });
     }
 });
 
