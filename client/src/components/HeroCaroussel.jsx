@@ -20,18 +20,23 @@ export const HeroCarousel = () => {
 
     return (
         <Carousel
+
+            sx={{
+                margin: "25px 100px 0px 100px"
+            }}
+
             indicatorContainerProps={{
                 style: {
-                    marginTop: '20px',
-                    transitionDuration: '0.5s'
+                    marginTop: "20px",
+                    transitionDuration: "0.5s"
                 }
             }}
 
             indicatorIconButtonProps={{
-                style: { color: '#222222' }
+                style: { color: "#222222" }
             }}
             activeIndicatorIconButtonProps={{
-                style: { color: '#EEEEEE' }
+                style: { color: "#EEEEEE" }
             }}
         >
             {
