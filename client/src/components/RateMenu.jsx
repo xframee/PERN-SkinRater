@@ -15,7 +15,7 @@ export default function RateMenuStars({ skinId, onRated }) {
     if (!user) return;
 
     try {
-      await fetch("http://localhost:5000/rate-skin", {
+      await fetch("http://localhost:5000/skins/rate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",                    // sends JWT cookie with the userinfo
