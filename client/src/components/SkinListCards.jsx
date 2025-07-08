@@ -3,7 +3,7 @@ import Pagination from "@mui/material/Pagination";
 import SkinInfoCard from "./SkinInfoCard";
 import "../App.css";
 
-const SkinListCards = ({ count, title }) => {
+const SkinListCards = ({ count, title, filter }) => {
     const [skins, setSkins] = useState([]);
     const [page, setPage] = useState(1);   // 1-based everywhere
     const [pageCount, setPageCount] = useState(0); // total number of pages
@@ -13,12 +13,13 @@ const SkinListCards = ({ count, title }) => {
         const url = new URL("http://localhost:5000/skins");
         url.searchParams.set("page", page);
         url.searchParams.set("limit", count);
+        url.searchParams.set("filter", filter);
 
         const res = await fetch(url,{ credentials: "include" });
         const data = await res.json();
         setSkins(data.data);
         setPageCount(data.totalPages);
-    }, [page, count]);
+    }, [page, count, filter]);
 
     useEffect(() => { fetchSkins(); }, [fetchSkins]);
 
