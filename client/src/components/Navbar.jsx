@@ -17,7 +17,7 @@ export const NavBar = () => {
                     CSRDB
                 </Typography>
                 <Stack direction='row' spacing={2}>
-                    <Button color='inherit' component={RouterLink} to="/path1">Explore</Button>
+                    <Button color='inherit' component={RouterLink} to="/skins">All Skins</Button>
                     <Button color='inherit' component={RouterLink} to="/path2">Rate</Button>
 
                     {!loading && (
