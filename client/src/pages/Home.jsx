@@ -6,7 +6,8 @@ export const Home = () => {
     return (
         <div>
             <HeroCarousel />
-            <SkinListCards count={4} title={"Newly released skins"} filter={"new"} />
+            <SkinListCards count={4} title={"Newly Released Skins"} filter={"newest"} />
+            <SkinListCards count={4} title={"Best Rated Skins"} filter={"best"} />
         </div>
     );
 }
