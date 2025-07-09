@@ -2,15 +2,31 @@ const pool = require("../db");
 
 const getAllSkins = async (req, res) => {
   try {
-    const page = Math.max(parseInt(req.query.page ?? "1", 10), 1);
-    const limit = Math.max(parseInt(req.query.limit ?? "10", 10), 1);
+    const filter = req.query.filter ?? 'all';
+    const sort = req.query.sort ?? 'desc';
+    const page = Math.max(parseInt(req.query.page ?? '1', 10), 1);
+    const limit = Math.max(parseInt(req.query.limit ?? '10', 10), 1);
     const offset = (page - 1) * limit;
 
-    const [{ count }] = (await pool.query("SELECT COUNT(*) FROM skin_info")).rows;
-    const { rows } = await pool.query(
-      "SELECT * FROM skin_info ORDER BY skin_id LIMIT $1 OFFSET $2",
-      [limit, offset]
-    );
+    let whereClause = '';
+    let orderClause = '';
+    const queryParams = [];
+
+    if (filter === 'best') {
+      whereClause = 'WHERE average_rating IS NOT NULL';
+      orderClause = `ORDER BY average_rating ${sort.toUpperCase()}`;
+    } else if (filter === 'newest') {
+      orderClause = `ORDER BY skin_id ${sort}`;
+    } else {
+      orderClause = `ORDER BY skin_id`;
+    }
+
+    const baseQuery = `SELECT * FROM skin_info ${whereClause} ${orderClause} LIMIT $1 OFFSET $2`;
+    const countQuery = `SELECT COUNT(*) FROM skin_info ${whereClause}`;
+    queryParams.push(limit, offset);
+
+    const [{ count }] = (await pool.query(countQuery)).rows;
+    const { rows } = await pool.query(baseQuery, queryParams);
 
     res.json({
       data: rows,
@@ -19,11 +35,13 @@ const getAllSkins = async (req, res) => {
       pageSize: limit,
       totalPages: Math.ceil(count / limit),
     });
+
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
   }
 };
+
 
 const getSkinById = async (req, res) => {
   try {
