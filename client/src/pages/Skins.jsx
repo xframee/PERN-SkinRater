@@ -1,7 +1,11 @@
 import React from "react";
 import SkinListCards from "../components/SkinListCards";
+import { useState } from "react";
 
 export const Skins = () => {
+
+    const [filter, setFilter] = useState("newest");
+
     return (
         <>
             #Add button to change the filter and sorting
