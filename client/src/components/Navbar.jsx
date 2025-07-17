@@ -14,7 +14,7 @@ export const NavBar = () => {
                     <img src={siteLogo} alt='site logo' style={{ width: '75px', height: 'auto' }} />
                 </IconButton>
                 <Typography variant='h6' sx={{ flexGrow: 1 }} textAlign="left">
-                    CSRDB
+                    SKINBOXD
                 </Typography>
                 <Stack direction='row' spacing={2}>
                     <Button color='inherit' component={RouterLink} to="/skins">All Skins</Button>

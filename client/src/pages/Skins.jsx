@@ -8,11 +8,11 @@ export const Skins = () => {
     const [filter, setFilter] = useState("newest");
 
     return (
-        <>
-            #Add button to change the filter and sorting
+        <div>
             <h1>Here you can see all skins currently in Counter Strike 2</h1>
             <Button variant="contained" onClick={() => setFilter("newest")}>Newest</Button>
+            <Button variant="contained" onClick={() => setFilter("best")}>Best Rated</Button>
             <SkinListCards count={12} title={"All Skins"} filter={filter} />
-        </>
+        </div>
     );
 };

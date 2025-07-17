@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback } from "react";
 import Pagination from "@mui/material/Pagination";
 import SkinInfoCard from "./SkinInfoCard";
 import "../App.css";
+import { Link as RouterLink } from 'react-router-dom';
+import Button from '@mui/material/Button';
 
 const SkinListCards = ({ count, title, filter }) => {
     const [skins, setSkins] = useState([]);
@@ -15,7 +17,7 @@ const SkinListCards = ({ count, title, filter }) => {
         url.searchParams.set("limit", count);
         url.searchParams.set("filter", filter);
 
-        const res = await fetch(url,{ credentials: "include" });
+        const res = await fetch(url, { credentials: "include" });
         const data = await res.json();
         setSkins(data.data);
         setPageCount(data.totalPages);
@@ -44,6 +46,8 @@ const SkinListCards = ({ count, title, filter }) => {
                 showFirstButton
                 showLastButton
             />
+
+            <Button color='inherit' component={RouterLink} to="/skins">All skins</Button>
 
         </div>
     );
