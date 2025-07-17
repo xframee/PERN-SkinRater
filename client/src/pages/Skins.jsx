@@ -2,6 +2,7 @@ import React from "react";
 import SkinListCards from "../components/SkinListCards";
 import { useState } from "react";
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 export const Skins = () => {
 
@@ -10,8 +11,10 @@ export const Skins = () => {
     return (
         <div>
             <h1>Here you can see all skins currently in Counter Strike 2</h1>
-            <Button variant="contained" onClick={() => setFilter("newest")}>Newest</Button>
-            <Button variant="contained" onClick={() => setFilter("best")}>Best Rated</Button>
+            <Stack spacing={2} direction="row" justifyContent={"center"}>
+                <Button variant="contained" onClick={() => setFilter("newest")}>Newest</Button>
+                <Button variant="contained" onClick={() => setFilter("best")}>Best Rated</Button>
+            </Stack>
             <SkinListCards count={12} title={"All Skins"} filter={filter} />
         </div>
     );
